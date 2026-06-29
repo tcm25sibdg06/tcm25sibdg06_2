@@ -9,7 +9,7 @@ TIPO_TAREFA (Id_tipo, nomeTipo);
 WORKSPACE (Id_workspace, nome_workspace, id_usuario, id_tipo);
 
 Associações:
-Possui (USUÁRIO, TAREFA) 				   1: N		Parcial/ Total	
+tem (USUÁRIO, TAREFA) 				     1: N		Parcial/ Total	
 Possui (USUÁRIO, WORKSPACE)        1: N		Parcial/ Total	
 Agrupa (WORKSPACE, TIPO_TAREFA)    1: N		Total/ Total	
 
