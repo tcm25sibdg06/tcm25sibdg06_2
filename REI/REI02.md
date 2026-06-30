@@ -3,13 +3,13 @@
 ## Modelo Entidade Associação 
 
 ### Entidades:
-USUÁRIO (nome, email, Id, senha, data {que criou a conta e update});
+USUÁRIO (nome, email, Id, password, data_criação, data_update;
 
-TAREFA (Id, textoDescritivo, estado);
+TAREFA (Id, descrição, estado,categoria,id_worspace,id_usuário);
 
 TIPO_TAREFA (Id_tipo, nomeTipo);
 
-WORKSPACE (Id_workspace, nome_workspace, id_usuario, id_tipo);
+WORKSPACE (id, nome, id_usuario, categoria);
 
 
 
