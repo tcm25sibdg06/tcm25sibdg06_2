@@ -33,6 +33,8 @@ Nome de atributo |	Descrição|	Domínio	Por Omissão|	Automático	|Nulo|
 |id_usuario	|Dono do workspace	|FK, INT	|-|sim	|não|
 |id_tipo	|O tipo de tarefa que o workspace filtra	|FK, INT	|-|sim	|não|
 
+## Vistas
+
 
 
 
