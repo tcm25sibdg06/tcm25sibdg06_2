@@ -36,9 +36,7 @@ Nome de atributo |	Descrição|	Domínio	Por Omissão|	Automático	|Nulo|
 
 ## Vistas
 ```sql
--- ============================================================
---  Gestor de Tarefas — Views
--- ============================================================
+
 
 USE task_manager;
 
