@@ -35,7 +35,92 @@ Nome de atributo |	Descrição|	Domínio	Por Omissão|	Automático	|Nulo|
 
 
 ## Vistas
+```sql
+-- ============================================================
+--  Gestor de Tarefas — Views
+-- ============================================================
 
+USE task_manager;
+
+
+-- resumo de cada utilizador
+CREATE OR REPLACE VIEW resumo_utilizadores AS
+SELECT
+    u.id,
+    u.name AS nome,
+    u.email,
+    COUNT(DISTINCT w.id) AS total_workspaces,
+    COUNT(DISTINCT t.id) AS total_tarefas
+FROM users u
+LEFT JOIN workspaces w ON w.id_usuario = u.id
+LEFT JOIN tasks      t ON t.id_usuario = u.id
+GROUP BY u.id, u.name, u.email;
+
+
+-- workspaces com o nome do dono
+CREATE OR REPLACE VIEW workspaces_com_dono AS
+SELECT
+    w.id,
+    w.name     AS workspace,
+    w.category AS categoria,
+    u.name     AS utilizador,
+    u.email
+FROM workspaces w
+JOIN users u ON u.id = w.id_usuario;
+
+
+-- todas as tarefas com utilizador e workspace
+CREATE OR REPLACE VIEW tarefas_completas AS
+SELECT
+    t.id,
+    t.description AS descricao,
+    t.status,
+    t.category    AS categoria,
+    u.name        AS utilizador,
+    w.name        AS workspace
+FROM tasks t
+JOIN  users      u ON u.id = t.id_usuario
+LEFT JOIN workspaces w ON w.id = t.id_workspace;
+
+
+-- só as tarefas pendentes
+CREATE OR REPLACE VIEW tarefas_pendentes AS
+SELECT
+    t.id,
+    t.description AS descricao,
+    t.category    AS categoria,
+    u.name        AS utilizador,
+    w.name        AS workspace
+FROM tasks t
+JOIN  users      u ON u.id = t.id_usuario
+LEFT JOIN workspaces w ON w.id = t.id_workspace
+WHERE t.status = 'Pending';
+
+
+-- contagem de tarefas por status, por utilizador
+CREATE OR REPLACE VIEW tarefas_por_status AS
+SELECT
+    u.name                        AS utilizador,
+    SUM(t.status = 'Pending')     AS pendentes,
+    SUM(t.status = 'In Progress') AS em_progresso,
+    SUM(t.status = 'Completed')   AS concluidas,
+    COUNT(t.id)                   AS total
+FROM users u
+LEFT JOIN tasks t ON t.id_usuario = u.id
+GROUP BY u.id, u.name;
+
+
+-- estatisticas por categoria
+CREATE OR REPLACE VIEW estatisticas_categorias AS
+SELECT
+    category                                                   AS categoria,
+    COUNT(*)                                                   AS total,
+    SUM(status = 'Pending')                                    AS pendentes,
+    SUM(status = 'Completed')                                  AS concluidas,
+    ROUND(SUM(status = 'Completed') * 100.0 / COUNT(*), 1)    AS percentagem_concluida
+FROM tasks
+GROUP BY category;
+```
 
 
 
