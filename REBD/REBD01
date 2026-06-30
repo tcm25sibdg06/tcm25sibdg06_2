@@ -168,6 +168,6 @@ INSERT INTO tasks (description, status, category, id_usuario, id_workspace) VALU
 ('Prestar suporte no chat',           'Pending',     'Trabalho', 13, 26),
 ('Fazer resumo de Historia',          'Pending',     'Escola',   14, 27),
 ('Conferir stock da loja',            'Completed',   'Trabalho', 14, 28),
-```
 ('Estudar introducao ao Direito',     'Pending',     'Escola',   15, 29),
 ('Telefonar para fornecedor',         'Pending',     'Trabalho', 15, 30);
+```
