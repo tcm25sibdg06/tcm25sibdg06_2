@@ -12,6 +12,7 @@ TIPO_TAREFA (Id_tipo, nomeTipo);
 WORKSPACE (Id_workspace, nome_workspace, id_usuario, id_tipo);
 
 
+
 ***Associações:***
 tem (USUÁRIO, TAREFA) 		       1: N		Parcial/ Total	
 
