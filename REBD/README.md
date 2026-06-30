@@ -19,7 +19,7 @@ Nome de atributo |	Descrição|	Domínio	Por Omissão|	Automático	|Nulo|
 |id|	Identificador único da tarefa	|PK, INT|	-|	sim|	não|
 |descrição|	Descrição/ observações	|TEXT	|-|	não|	sim|
 |estado|	Estado das tarefas	|ENUM	|-|	sim|	não|
-|nome_tarefa| nome descritivo| VARCHAR(100)|-|não|sim|
+|categoria| nome descritivo| VARCHAR(100)|-|não|sim|
 |Id_workspace |	Define se é escola, trabalho|	FK, INT|	-|sim	|sim|
 |Id_usuário	|Ref. ao id_usuário|	FK, INT|	-| 	sim	|não|
 
@@ -29,9 +29,9 @@ Nome de atributo |	Descrição|	Domínio	Por Omissão|	Automático	|Nulo|
 Nome de atributo |	Descrição|	Domínio	Por Omissão|	Automático	|Nulo|
 -----------------|-----------|---------------------|--------------|----|
 |Id|	Identificador único do workspace|	PK, INT|	-|sim|	não|
-|nome_workspace|	Nome descritivo|	VARCHAR(100)|	-|	não|	sim|
+|categoria|	Nome descritivo|	VARCHAR(100)|	-|	não|	sim|
 |id_usuario	|Dono do workspace	|FK, INT	|-|sim	|não|
-|id_tipo	|O tipo de tarefa que o workspace filtra	|FK, INT	|-|sim	|não|
+
 
 ## Vistas
 
