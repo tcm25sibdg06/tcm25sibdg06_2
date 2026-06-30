@@ -2,7 +2,7 @@
 
 ## Modelo Entidade Associação 
 
-***Entidades:***
+### Entidades:
 USUÁRIO (nome, email, Id, senha, data {que criou a conta e update});
 
 TAREFA (Id, textoDescritivo, estado);
@@ -13,7 +13,7 @@ WORKSPACE (Id_workspace, nome_workspace, id_usuario, id_tipo);
 
 
 
-***Associações:***
+### Associações:
 tem (USUÁRIO, TAREFA) 		       1: N		Parcial/ Total	
 
 Possui (USUÁRIO, WORKSPACE)        1: N		Parcial/ Total	
