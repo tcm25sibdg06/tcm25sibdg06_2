@@ -1,3 +1,4 @@
+
 # Esquema Conceptual
 
 ## Modelo Entidade Associação 
@@ -22,3 +23,5 @@ Agrupa (WORKSPACE, TIPO_TAREFA)    1: N		Total/ Total
 
 
 ## Diagrama Entidade Associação
+
+<img width="1566" height="760" alt="DIAGRAMA OFICIAL" src="https://github.com/user-attachments/assets/96be34a1-f984-4ee1-ac09-7d54ec071075" />
