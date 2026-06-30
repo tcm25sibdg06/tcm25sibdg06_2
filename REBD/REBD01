@@ -1,91 +1,173 @@
-#SQL
-##DDL
+```sql
 
--- 1. Criação da Tabela de Usuários
-CREATE TABLE Usuário (
-	Id_usuário INT AUTO_INCREMENT,
-	nome VARCHAR (100) NOT NULL,
-	email VARCHAR (100) NOT NULL UNIQUE,
-	senha VARCHAR (225) NOT NULL,
-	data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-	data_update DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP 
-    PRIMARY KEY (id_usuario)
+CREATE DATABASE IF NOT EXISTS task_manager
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE task_manager;
+
+
+-- ------------------------------------------------------------
+-- 1. USERS
+-- ------------------------------------------------------------
+CREATE TABLE users (
+    id         INT          AUTO_INCREMENT,
+    name       VARCHAR(100) NOT NULL,
+    email      VARCHAR(100) NOT NULL UNIQUE,
+    password   VARCHAR(255) NOT NULL,
+    created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+                            ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_users PRIMARY KEY (id)
 );
 
--- 2. Criação da Tabela de Tarefas
-CREATE TABLE Workspace (
-    id_workspace INT AUTO_INCREMENT,
-    nome_workspace VARCHAR(100) NOT NULL,
-    id_usuario INT NOT NULL,
-    categoria_filtrada VARCHAR(50) NOT NULL,
-    CONSTRAINT PK_Workspace PRIMARY KEY (id_workspace),
-    CONSTRAINT FK_Workspace_Usuario 
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario) ON DELETE CASCADE
+
+-- ------------------------------------------------------------
+-- 2. WORKSPACES  (pertence a um user)
+-- ------------------------------------------------------------
+CREATE TABLE workspaces (
+    id         INT          AUTO_INCREMENT,
+    name       VARCHAR(100) NOT NULL,
+    category   VARCHAR(50)  NOT NULL,
+    id_usuario INT          NOT NULL,
+    CONSTRAINT PK_workspaces PRIMARY KEY (id),
+    CONSTRAINT FK_workspaces_users
+        FOREIGN KEY (id_usuario)
+        REFERENCES users (id)
+        ON DELETE CASCADE
 );
 
--- 3. Criação da Tabela de Workspaces
-CREATE TABLE Workspace (
-Id_workspace INT AUTO_INCREMENT,
-nome_workspace VARCHAR(100) NOT NULL,
-id_usuario INT NOT NULL,
-categoria_filtrada VARCHAR (50) NOT NULL,
-CONSTRAINT PK_Workspace PRIMARY KEY (id_workspace),
-CONSTRAINT FK_Workspace_Usuario 
-FOREIGN KEY (id_usario) REFERENCES Usuario (id_usuario) ON DELETE CASCADE
+
+-- ------------------------------------------------------------
+-- 3. TASKS  (pertence a um user e, opcionalmente, a um workspace)
+-- ------------------------------------------------------------
+CREATE TABLE tasks (
+    id           INT                                          AUTO_INCREMENT,
+    description  VARCHAR(255)                                 NOT NULL,
+    status       ENUM('Pending', 'In Progress', 'Completed')  NOT NULL DEFAULT 'Pending',
+    category     VARCHAR(50)                                  NOT NULL,
+    id_usuario   INT                                          NOT NULL,
+    id_workspace INT                                          DEFAULT NULL,
+    CONSTRAINT PK_tasks PRIMARY KEY (id),
+    CONSTRAINT FK_tasks_users
+        FOREIGN KEY (id_usuario)
+        REFERENCES users (id)
+        ON DELETE CASCADE,
+    CONSTRAINT FK_tasks_workspaces
+        FOREIGN KEY (id_workspace)
+        REFERENCES workspaces (id)
+        ON DELETE SET NULL
 );
 
-##DML
 
---Completando a tabela Usuario 
-INSERT INTO Usuario (nome, email, senha) VALUES 
-('Joao Silva', 'joao.silva@email.com', 'pwd1'), ('Maria Santos', 'maria.santos@email.com', 'pwd2'),
-('Pedro Costa', 'pedro.costa@email.com', 'pwd3'), ('Ana Rodrigues', 'ana.rodrigues@email.com', 'pwd4'),
-('Miguel Oliveira', 'miguel.oliveira@email.com', 'pwd5'), ('Sofia Martins', 'sofia.martins@email.com', 'pwd6'),
-('Carlos Sousa', 'carlos.sousa@email.com', 'pwd7'), ('Barbara Lima', 'barbara.lima@email.com', 'pwd8'),
-('Ricardo Pereira', 'ricardo.pereira@email.com', 'pwd9'), ('Ines Carvalho', 'ines.carvalho@email.com', 'pwd10'),
-('David Ribeiro', 'david.ribeiro@email.com', 'pwd11'), ('Beatriz Gomes', 'beatriz.gomes@email.com', 'pwd12'),
-('Andre Fernandes', 'andre.fernandes@email.com', 'pwd13'), ('Catarina Pinto', 'catarina.pinto@email.com', 'pwd14'),
-('Jose Marques', 'jose.marques@email.com', 'pwd15'), ('Diana Almeida', 'diana.almeida@email.com', 'pwd16'),
-('Tiago Feliciano', 'tiago.feliciano@email.com', 'pwd17'), ('Sara Antunes', 'sara.antunes@email.com', 'pwd18'),
-('Vitor Rocha', 'vitor.rocha@email.com', 'pwd19'), ('Patricia Nunes', 'patricia.nunes@email.com', 'pwd20'),
-('Daniel Mendes', 'daniel.mendes@email.com', 'pwd21'), ('Rita Fonseca', 'rita.fonseca@email.com', 'pwd22'),
-('Nuno Teixeira', 'nuno.teixeira@email.com', 'pwd23'), ('Claudia Cruz', 'claudia.cruz@email.com', 'pwd24'),
-('Goncalo Neves', 'goncalo.neves@email.com', 'pwd25'), ('Marta Cardoso', 'marta.cardoso@email.com', 'pwd26'),
-('Filipe Soares', 'filipe.soares@email.com', 'pwd27'), ('Joana Moreira', 'joana.moreira@email.com', 'pwd28'),
-('Bruno Machado', 'bruno.machado@email.com', 'pwd29'), ('Francisca Abreu', 'francisca.abreu@email.com', 'pwd30');
+-- ============================================================
+--  DADOS DE EXEMPLO
+-- ============================================================
 
--- Completando a tabela Usuario (registos identificando diretamente a categoria)
-INSERT INTO Tarefa (descricao, estado, categoria, id_usuario) VALUES
-('Estudar para o teste de SIBD', 'Pendente', 'Escola', 1), ('Desenvolver o script SQL', 'Concluído', 'Trabalho', 1),
-('Entregar o relatorio de avaliacao', 'Pendente', 'Escola', 2), ('Responder aos emails', 'Concluído', 'Trabalho', 2),
-('Fazer exercicios de matematica', 'Pendente', 'Escola', 3), ('Programar a nova API', 'Pendente', 'Trabalho', 3),
-('Ler o capitulo 4 de Redes', 'Concluido', 'Escola', 4), ('Reuniao com equipa de design', 'Pendente', 'Trabalho', 4),
-('Revisao da tese de mestrado', 'Pendente', 'Escola', 5), ('Atualizar o servidor', 'Concluído', 'Trabalho', 5),
-('Preparar apresentacao', 'Pendente', 'Escola', 6), ('Consultoria com o cliente X', 'Pendente', 'Trabalho', 6),
-('Fazer os TPC de Fisica', 'Concluido', 'Escola', 7), ('Enviar faturas pendentes', 'Pendente', 'Trabalho', 7),
-('Pesquisa para o artigo', 'Pendente', 'Escola', 8), ('Planear calendario editorial', 'Concluído', 'Trabalho', 8),
-('Estudar gramatica de Ingles', 'Pendente', 'Escola', 9), ('Reparar o motor do veiculo', 'Pendente', 'Trabalho', 9),
-('Resolver lista de algoritmos', 'Concluido', 'Escola', 10), ('Organizar fichas', 'Pendente', 'Trabalho', 10),
-('Inscricao nos exames', 'Pendente', 'Escola', 11), ('Lancar campanha de anuncios', 'Concluído', 'Trabalho', 11),
-('Comprar material para maquete', 'Pendente', 'Escola', 12), ('Criar identidade visual', 'Pendente', 'Trabalho', 12),
-('Praticar Alemao', 'Concluido', 'Escola', 13), ('Prestar suporte no chat', 'Pendente', 'Trabalho', 13),
-('Fazer resumo de Historia', 'Pendente', 'Escola', 14), ('Conferir stock da loja', 'Concluído', 'Trabalho', 14),
-('Estudar introducao ao Direito', 'Pendente', 'Escola', 15), ('Telefonar para fornecedor', 'Pendente', 'Trabalho', 15);
+-- ------------------------------------------------------------
+-- Users (30 registos)
+-- ------------------------------------------------------------
+INSERT INTO users (name, email, password) VALUES
+('Joao Silva',       'joao.silva@email.com',      'pwd1'),
+('Maria Santos',     'maria.santos@email.com',     'pwd2'),
+('Pedro Costa',      'pedro.costa@email.com',      'pwd3'),
+('Ana Rodrigues',    'ana.rodrigues@email.com',    'pwd4'),
+('Miguel Oliveira',  'miguel.oliveira@email.com',  'pwd5'),
+('Sofia Martins',    'sofia.martins@email.com',    'pwd6'),
+('Carlos Sousa',     'carlos.sousa@email.com',     'pwd7'),
+('Barbara Lima',     'barbara.lima@email.com',     'pwd8'),
+('Ricardo Pereira',  'ricardo.pereira@email.com',  'pwd9'),
+('Ines Carvalho',    'ines.carvalho@email.com',    'pwd10'),
+('David Ribeiro',    'david.ribeiro@email.com',    'pwd11'),
+('Beatriz Gomes',    'beatriz.gomes@email.com',    'pwd12'),
+('Andre Fernandes',  'andre.fernandes@email.com',  'pwd13'),
+('Catarina Pinto',   'catarina.pinto@email.com',   'pwd14'),
+('Jose Marques',     'jose.marques@email.com',     'pwd15'),
+('Diana Almeida',    'diana.almeida@email.com',    'pwd16'),
+('Tiago Feliciano',  'tiago.feliciano@email.com',  'pwd17'),
+('Sara Antunes',     'sara.antunes@email.com',     'pwd18'),
+('Vitor Rocha',      'vitor.rocha@email.com',      'pwd19'),
+('Patricia Nunes',   'patricia.nunes@email.com',   'pwd20'),
+('Daniel Mendes',    'daniel.mendes@email.com',    'pwd21'),
+('Rita Fonseca',     'rita.fonseca@email.com',     'pwd22'),
+('Nuno Teixeira',    'nuno.teixeira@email.com',    'pwd23'),
+('Claudia Cruz',     'claudia.cruz@email.com',     'pwd24'),
+('Goncalo Neves',    'goncalo.neves@email.com',    'pwd25'),
+('Marta Cardoso',    'marta.cardoso@email.com',    'pwd26'),
+('Filipe Soares',    'filipe.soares@email.com',    'pwd27'),
+('Joana Moreira',    'joana.moreira@email.com',    'pwd28'),
+('Bruno Machado',    'bruno.machado@email.com',    'pwd29'),
+('Francisca Abreu',  'francisca.abreu@email.com',  'pwd30');
 
--- -- Completando a tabela Workspace (registos que ligam utilizadores as suas categorias existentes)
-INSERT INTO Tarefa (nome_workspace, id_usuario, categoria) VALUES
-('Estudos do Joao', 1, 'Escola'), ('Empresa do Joao', 1, 'Trabalho'),
-('Universidade da Maria', 2, 'Escola'), ('Escritorio da Maria', 2, 'Trabalho'),
-('Faculdade do Pedro', 3, 'Escola'), ('Freelance do Pedro', 3, 'Trabalho'),
-('Aulas da Ana', 4, 'Escola'), ('Emprego da Ana', 4, 'Trabalho'),
-('Estudos do Miguel', 5, 'Escola'), ('Desenvolvimento do Miguel', 5, 'Trabalho'),
-('Cursos da Sofia', 6, 'Escola'), ('Consultoria da Sofia', 6, 'Trabalho'),
-('Escola do Carlos', 7, 'Escola'), ('Faturacao do Carlos', 7, 'Trabalho'),
-('Mestrado da Barbara', 8, 'Escola'), ('Gestao da Barbara', 8, 'Trabalho'),
-('Secundario do Ricardo', 9, 'Escola'), ('Oficina do Ricardo', 9, 'Trabalho'),
-('Estudos da Ines', 10, 'Escola'), ('Clinica da Ines', 10, 'Trabalho'),
-('Exames do David', 11, 'Escola'), ('Marketing do David', 11, 'Trabalho'),
-('Universidade da Beatriz', 12, 'Escola'), ('Design da Beatriz', 12, 'Trabalho'),
-('Linguas do Andre', 13, 'Escola'), ('Suporte do Andre', 13, 'Trabalho'),
-('Aulas da Catarina', 14, 'Escola'), ('Loja da Catarina', 14, 'Trabalho'),
-('Estudos do Jose', 15, 'Escola'), ('Vendas do Jose', 15, 'Trabalho');
+
+-- ------------------------------------------------------------
+-- Workspaces (2 por user, 30 registos)
+-- ------------------------------------------------------------
+INSERT INTO workspaces (name, category, id_usuario) VALUES
+('Estudos do Joao',           'Escola',    1),
+('Empresa do Joao',           'Trabalho',  1),
+('Universidade da Maria',     'Escola',    2),
+('Escritorio da Maria',       'Trabalho',  2),
+('Faculdade do Pedro',        'Escola',    3),
+('Freelance do Pedro',        'Trabalho',  3),
+('Aulas da Ana',              'Escola',    4),
+('Emprego da Ana',            'Trabalho',  4),
+('Estudos do Miguel',         'Escola',    5),
+('Desenvolvimento do Miguel', 'Trabalho',  5),
+('Cursos da Sofia',           'Escola',    6),
+('Consultoria da Sofia',      'Trabalho',  6),
+('Escola do Carlos',          'Escola',    7),
+('Faturacao do Carlos',       'Trabalho',  7),
+('Mestrado da Barbara',       'Escola',    8),
+('Gestao da Barbara',         'Trabalho',  8),
+('Secundario do Ricardo',     'Escola',    9),
+('Oficina do Ricardo',        'Trabalho',  9),
+('Estudos da Ines',           'Escola',   10),
+('Clinica da Ines',           'Trabalho', 10),
+('Exames do David',           'Escola',   11),
+('Marketing do David',        'Trabalho', 11),
+('Universidade da Beatriz',   'Escola',   12),
+('Design da Beatriz',         'Trabalho', 12),
+('Linguas do Andre',          'Escola',   13),
+('Suporte do Andre',          'Trabalho', 13),
+('Aulas da Catarina',         'Escola',   14),
+('Loja da Catarina',          'Trabalho', 14),
+('Estudos do Jose',           'Escola',   15),
+('Vendas do Jose',            'Trabalho', 15);
+
+
+-- ------------------------------------------------------------
+-- Tasks (2 por user, 30 registos)
+-- ------------------------------------------------------------
+INSERT INTO tasks (description, status, category, id_usuario, id_workspace) VALUES
+('Estudar para o teste de SIBD',      'Pending',     'Escola',    1,  1),
+('Desenvolver o script SQL',          'Completed',   'Trabalho',  1,  2),
+('Entregar o relatorio de avaliacao', 'Pending',     'Escola',    2,  3),
+('Responder aos emails',              'Completed',   'Trabalho',  2,  4),
+('Fazer exercicios de matematica',    'Pending',     'Escola',    3,  5),
+('Programar a nova API',              'Pending',     'Trabalho',  3,  6),
+('Ler o capitulo 4 de Redes',         'Completed',   'Escola',    4,  7),
+('Reuniao com equipa de design',      'Pending',     'Trabalho',  4,  8),
+('Revisao da tese de mestrado',       'Pending',     'Escola',    5,  9),
+('Atualizar o servidor',              'Completed',   'Trabalho',  5, 10),
+('Preparar apresentacao',             'Pending',     'Escola',    6, 11),
+('Consultoria com o cliente X',       'Pending',     'Trabalho',  6, 12),
+('Fazer os TPC de Fisica',            'Completed',   'Escola',    7, 13),
+('Enviar faturas pendentes',          'Pending',     'Trabalho',  7, 14),
+('Pesquisa para o artigo',            'Pending',     'Escola',    8, 15),
+('Planear calendario editorial',      'Completed',   'Trabalho',  8, 16),
+('Estudar gramatica de Ingles',       'Pending',     'Escola',    9, 17),
+('Reparar o motor do veiculo',        'Pending',     'Trabalho',  9, 18),
+('Resolver lista de algoritmos',      'Completed',   'Escola',   10, 19),
+('Organizar fichas',                  'Pending',     'Trabalho', 10, 20),
+('Inscricao nos exames',              'Pending',     'Escola',   11, 21),
+('Lancar campanha de anuncios',       'Completed',   'Trabalho', 11, 22),
+('Comprar material para maquete',     'Pending',     'Escola',   12, 23),
+('Criar identidade visual',           'Pending',     'Trabalho', 12, 24),
+('Praticar Alemao',                   'Completed',   'Escola',   13, 25),
+('Prestar suporte no chat',           'Pending',     'Trabalho', 13, 26),
+('Fazer resumo de Historia',          'Pending',     'Escola',   14, 27),
+('Conferir stock da loja',            'Completed',   'Trabalho', 14, 28),
+```
+('Estudar introducao ao Direito',     'Pending',     'Escola',   15, 29),
+('Telefonar para fornecedor',         'Pending',     'Trabalho', 15, 30);
