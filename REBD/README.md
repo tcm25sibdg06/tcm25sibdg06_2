@@ -5,7 +5,7 @@
 
 Nome de atributo |	Descrição|	Domínio	Por Omissão|	Automático	|Nulo|
 -----------------|-----------|---------------------|--------------|----|
-|Id_usuário	|Identificador único do usuário|	INT, PK, AUTO_INCREMENT|	- |sim|	não|
+|id	|Identificador único do usuário|	INT, PK, AUTO_INCREMENT|	- |sim|	não|
 |nome|	Nome do usuário|	VARCHAR(100)|	-|	não|	sim|
 |email|	Email utilizado para login|	VARCHAR(100)	|-|	não|	não|
 |password	|password de segurança	|VARCHAR(100)	|-|não|	não|
@@ -29,6 +29,7 @@ Nome de atributo |	Descrição|	Domínio	Por Omissão|	Automático	|Nulo|
 Nome de atributo |	Descrição|	Domínio	Por Omissão|	Automático	|Nulo|
 -----------------|-----------|---------------------|--------------|----|
 |Id|	Identificador único do workspace|	PK, INT|	-|sim|	não|
+|nome|nome do worspace|varchar(100)|-|não|sim|
 |categoria|	Nome descritivo|	VARCHAR(100)|	-|	não|	sim|
 |id_usuario	|Dono do workspace	|FK, INT	|-|sim	|não|
 
