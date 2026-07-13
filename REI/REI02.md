@@ -6,9 +6,9 @@
 ### Entidades:
 USUÁRIO (nome, email, Id, password, data_criação, data_update;
 
-TAREFA (Id, descrição, estado, categoria, id_worspace, id_usuário);
+TAREFA (Id, descrição, estado, categoria);
 
-WORKSPACE (id, nome, id_usuario, categoria);
+WORKSPACE (id, nome, categoria);
 
 
 
