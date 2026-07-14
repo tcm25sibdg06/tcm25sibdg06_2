@@ -25,7 +25,9 @@ WORKSPACE (id, nome, categoria);
 
 ### Associações: 
 tem (USUÁRIO, TAREFA)        1: N   Parcial/ Total
+
 Possui (USUÁRIO, WORKSPACE)  1: N   Parcial/ Total
+
 Agrupa (WORKSPACE, TAREFA)   1: N   Parcial/ Parcial
 
 
