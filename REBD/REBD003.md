@@ -1,4 +1,4 @@
-## Tabelas
+## Esquema Relacional
 
 
 ### USUARIO
