@@ -1,4 +1,4 @@
-### Do Modele EA a Relação
+### Do ModelO EA a Relação
 
 ## Processo 
 A transformação do modelo Entidade-Tipo para o modelo relacional foi realizada com base nas regras 
