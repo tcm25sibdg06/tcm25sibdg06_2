@@ -18,7 +18,9 @@ Para potenciar a tomada de decisões e a monitorização de produtividade, a bas
 
 ### Entidades
 USUÁRIO (nome, email, Id, password, data_criação, data_update;
+
 TAREFA (Id, descrição, estado, categoria);
+
 WORKSPACE (id, nome, categoria);
 
 ### Associações: 
